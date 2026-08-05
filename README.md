@@ -31,9 +31,9 @@ Contract Address: `0x323220f33cc5A0Cd83242eB4f571A27D7012E2d2`
 
 | Method | TX Hash |
 |--------|---------|
-| create_task (task 0) | `(https://explorer-studio.genlayer.com/tx/0x622d6ba4fdab36d96e4eef6e0c9333907b965fa84ba40932db949361c78bfbd8)` |
-| verify_and_resolve (task 1 - approved) | `(https://explorer-studio.genlayer.com/tx/0xdbb4befb7b294863e8e26427f5dae688224c1558cda1f3b3c3a9be6c27cb2304)` |
-| resolve_dispute (task 2 - resolved) | `(https://explorer-studio.genlayer.com/tx/0xa2df0a65e9e7ed65246d50aef3d7b23097daa1df88507df147abb43c29d7a2df)` |
+| create_task (task 0) | `https://explorer-studio.genlayer.com/tx/0x622d6ba4fdab36d96e4eef6e0c9333907b965fa84ba40932db949361c78bfbd8` |
+| verify_and_resolve (task 1 - approved) | `https://explorer-studio.genlayer.com/tx/0xdbb4befb7b294863e8e26427f5dae688224c1558cda1f3b3c3a9be6c27cb2304` |
+| resolve_dispute (task 2 - resolved) | `https://explorer-studio.genlayer.com/tx/0xa2df0a65e9e7ed65246d50aef3d7b23097daa1df88507df147abb43c29d7a2df` |
 
 ## Use Cases
 
