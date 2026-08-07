@@ -1,4 +1,4 @@
-# FreelanceTaskValidator — GenLayer Intelligent Contract
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/106d516d-5b4c-4c81-87d8-9b159517c378" /># FreelanceTaskValidator — GenLayer Intelligent Contract
 
 A reusable Intelligent Contract primitive for verifying freelance task completion using AI consensus.
 
@@ -25,15 +25,16 @@ create_task → submit_evidence → verify_and_resolve → (raise_dispute → re
 ## Deployed Contract
 
 Network: GenLayer Studionet
-Contract Address: `0x323220f33cc5A0Cd83242eB4f571A27D7012E2d2`
+Contract Address: `0x659037871d5BAD38514275c6030D923765f71b5f`
 
 ## Transactions
 
 | Method | TX Hash |
 |--------|---------|
-| create_task (task 0) | `https://explorer-studio.genlayer.com/tx/0x622d6ba4fdab36d96e4eef6e0c9333907b965fa84ba40932db949361c78bfbd8` |
-| verify_and_resolve (task 1 - approved) | `https://explorer-studio.genlayer.com/tx/0xdbb4befb7b294863e8e26427f5dae688224c1558cda1f3b3c3a9be6c27cb2304` |
-| resolve_dispute (task 2 - resolved) | `https://explorer-studio.genlayer.com/tx/0xa2df0a65e9e7ed65246d50aef3d7b23097daa1df88507df147abb43c29d7a2df` |
+| create_task | `https://explorer-studio.genlayer.com/tx/0x567a896e5fdb64066e6771eea540a345ed870afef149337405597cd08181441e` |
+| verify_and_resolve (approved) | `https://explorer-studio.genlayer.com/tx/0xf92ededdd77a3d21329859dc5777997b42decddf3a7b4cb72c8289d350389f48` |
+| raise_dispute | `https://explorer-studio.genlayer.com/tx/0xb37310ac8557e80129e920619e47e14ca60a445d8a3c9dcc8d80d280595c7a2b` |
+| resolve_dispute (resolved_worker_wins) | `https://explorer-studio.genlayer.com/tx/0x293a1d985091f7f3c9c91ce75d98acaf425ab641f316be18283e0449e25a69e9` |
 
 ## Use Cases
 
