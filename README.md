@@ -1,4 +1,4 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/106d516d-5b4c-4c81-87d8-9b159517c378" /># FreelanceTaskValidator — GenLayer Intelligent Contract
+FreelanceTaskValidator — GenLayer Intelligent Contract
 
 A reusable Intelligent Contract primitive for verifying freelance task completion using AI consensus.
 
