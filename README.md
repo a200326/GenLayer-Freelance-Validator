@@ -19,8 +19,9 @@ create_task → submit_evidence → verify_and_resolve → (raise_dispute → re
 - `open` — task created, waiting for submission
 - `submitted` — evidence URL provided by worker
 - `approved` — AI validators confirmed task completion
-- `disputed` — client challenged the result
-- `resolved` — final AI arbitration completed
+- `disputed` — client challenged the result or evidence was rejected
+- `resolved_worker_wins` — arbitration confirmed worker completed the task
+- `resolved_client_wins` — arbitration sided with client's dispute
 
 ## Deployed Contract
 
