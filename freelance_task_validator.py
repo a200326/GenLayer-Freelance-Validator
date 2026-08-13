@@ -17,14 +17,15 @@ class FreelanceTaskValidator(gl.Contract):
         self.task_count = u256(0)
 
     @gl.public.write
-    def create_task(self, client: gl.Address, worker: gl.Address, description: str) -> None:
+    def create_task(self, worker: str, description: str) -> None:
+        caller = str(gl.message.sender_address).lower()
         self.descriptions.append(description)
         self.evidence_urls.append("")
         self.statuses.append("open")
         self.results.append("")
         self.verdicts.append("")
-        self.clients.append(str(client))
-        self.workers.append(str(worker))
+        self.clients.append(caller)
+        self.workers.append(worker.lower())
         self.task_count += u256(1)
 
     @gl.public.write
