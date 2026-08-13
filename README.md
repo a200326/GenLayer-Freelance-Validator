@@ -26,16 +26,16 @@ create_task → submit_evidence → verify_and_resolve → (raise_dispute → re
 ## Deployed Contract
 
 Network: GenLayer Studionet
-Contract Address: `0x659037871d5BAD38514275c6030D923765f71b5f`
+Contract Address: `0x186182ceaD0eB4921A67feba42952a8076fFed42`
 
 ## Transactions
 
 | Method | TX Hash |
 |--------|---------|
-| create_task | `https://explorer-studio.genlayer.com/tx/0x567a896e5fdb64066e6771eea540a345ed870afef149337405597cd08181441e` |
-| verify_and_resolve (approved) | `https://explorer-studio.genlayer.com/tx/0xf92ededdd77a3d21329859dc5777997b42decddf3a7b4cb72c8289d350389f48` |
-| raise_dispute | `https://explorer-studio.genlayer.com/tx/0xb37310ac8557e80129e920619e47e14ca60a445d8a3c9dcc8d80d280595c7a2b` |
-| resolve_dispute (resolved_worker_wins) | `https://explorer-studio.genlayer.com/tx/0x293a1d985091f7f3c9c91ce75d98acaf425ab641f316be18283e0449e25a69e9` |
+| create_task | `https://explorer-studio.genlayer.com/tx/0x7f917d950211b41e48aeaca21dae8e5e28f4e1c9d7bfc28d9d45012a59d8f711` |
+| verify_and_resolve (approved) | `https://explorer-studio.genlayer.com/tx/0xaa3d784bd1312ca3abef2d8f13f4323db88fb5f6f313586fde44e831071b13ad` |
+| raise_dispute | `https://explorer-studio.genlayer.com/tx/0x3d694882eec46090f152b579e36c7c134b5db9b3809d95a36b9b5c47578f7bd0` |
+| resolve_dispute (resolved_worker_wins) | `https://explorer-studio.genlayer.com/tx/0xa0b343309b477450ebe2725526f4775d7c0594a0766f85fb2f55a30026c600ec` |
 
 ## Use Cases
 
