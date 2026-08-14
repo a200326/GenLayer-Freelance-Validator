@@ -23,6 +23,15 @@ create_task → submit_evidence → verify_and_resolve → (raise_dispute → re
 - `resolved_worker_wins` — arbitration confirmed worker completed the task
 - `resolved_client_wins` — arbitration sided with client's dispute
 
+## Authorization
+
+Each lifecycle transition enforces role-based access:
+- `create_task` — records the caller as client via gl.message.sender_address
+- `submit_evidence` — restricted to the registered worker address
+- `verify_and_resolve` — restricted to the client address
+- `raise_dispute` — restricted to the client address
+- `resolve_dispute` — restricted to the client address
+
 ## Deployed Contract
 
 Network: GenLayer Studionet
