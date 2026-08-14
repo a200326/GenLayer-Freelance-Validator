@@ -31,14 +31,18 @@ class FreelanceTaskValidator(gl.Contract):
     @gl.public.write
     def submit_evidence(self, task_id: u256, evidence_url: str) -> None:
         idx = int(task_id)
+        caller = str(gl.message.sender_address).lower()
         assert self.statuses[idx] == "open", "Task must be open"
+        assert caller == self.workers[idx], "Only the worker can submit evidence"
         self.evidence_urls[idx] = evidence_url
         self.statuses[idx] = "submitted"
 
     @gl.public.write
     def verify_and_resolve(self, task_id: u256) -> None:
         idx = int(task_id)
+        caller = str(gl.message.sender_address).lower()
         assert self.statuses[idx] == "submitted", "Task must be submitted first"
+        assert caller == self.clients[idx], "Only the client can trigger verification"
 
         description = self.descriptions[idx]
         evidence_url = self.evidence_urls[idx]
@@ -86,7 +90,9 @@ or
     @gl.public.write
     def raise_dispute(self, task_id: u256, reason: str) -> None:
         idx = int(task_id)
+        caller = str(gl.message.sender_address).lower()
         assert self.statuses[idx] == "approved", "Can only dispute approved tasks"
+        assert caller == self.clients[idx], "Only the client can raise a dispute"
         self.results[idx] = "Disputed: " + reason
         self.verdicts[idx] = "disputed"
         self.statuses[idx] = "disputed"
@@ -94,7 +100,9 @@ or
     @gl.public.write
     def resolve_dispute(self, task_id: u256) -> None:
         idx = int(task_id)
+        caller = str(gl.message.sender_address).lower()
         assert self.statuses[idx] == "disputed", "Task must be in disputed state"
+        assert caller == self.clients[idx], "Only the client can resolve a dispute"
 
         description = self.descriptions[idx]
         evidence_url = self.evidence_urls[idx]
