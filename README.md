@@ -8,9 +8,11 @@ FreelanceTaskValidator enables trustless verification of digital work deliverabl
 
 ## How GenLayer Consensus Is Used
 
-The `verify_and_resolve` function uses `gl.eq_principle.prompt_comparative` — each validator independently fetches the evidence URL via `gl.nondet.web.get`, reads the content, and prompts an LLM to evaluate whether the deliverable satisfies the task description. Validators must reach the same verdict (approved/rejected) for the transaction to finalize.
+In `verify_and_resolve`, each validator independently fetches the evidence URL via `gl.nondet.web.get` and returns a single canonical verdict: `approved` or `rejected`. No free-form reasoning is stored, eliminating any risk of validators agreeing on verdict while disagreeing on reasoning.
 
-The `resolve_dispute` function triggers a second round of AI consensus with the dispute reason included, allowing for a fair re-evaluation.
+In `resolve_dispute`, validators independently reacquire the evidence directly from the submission URL and determine `worker_wins` or `client_wins`. The final verdict drives the terminal state to `resolved_worker_wins` or `resolved_client_wins`.
+
+Both rounds use `gl.eq_principle.prompt_comparative` to reach consensus.
 
 ## Lifecycle
 
@@ -35,16 +37,16 @@ Each lifecycle transition enforces role-based access:
 ## Deployed Contract
 
 Network: GenLayer Studionet
-Contract Address: `0xdB0099422Ad2542e4ead0aC81d8053c87ebdC79D`
+Contract Address: `0x7Ed4C98Ae328c192dAC5fa72F76EAF87e5cA60Be`
 
 ## Transactions
 
 | Method | TX Hash |
 |--------|---------|
-| create_task | `https://explorer-studio.genlayer.com/tx/0x384e0586d98a9a46d40649858e858a1f2057b9f32284556a930fa09968a13bda` |
-| verify_and_resolve (approved) | `https://explorer-studio.genlayer.com/tx/0xaf2bf5e6d3eec9a2b56bf1944a81cede88d29aa5a447e4073a5750e1ddaf431d` |
-| raise_dispute | `https://explorer-studio.genlayer.com/tx/0xa502ec9054f68422b3f440e149234507d6a5674ca37381d1b82cb3640754f693` |
-| resolve_dispute (resolved_worker_wins) | `https://explorer-studio.genlayer.com/tx/0xb984abf8e63487966a4bfc169e656803f23aa9cce82ec81e3f7e580ddd2f22aa` |
+| create_task | `https://explorer-studio.genlayer.com/tx/0x3401875f3e299cbbfbdea1e084205230603fdda1a2be7fcf759dc5b66136690e` |
+| verify_and_resolve (approved) | `https://explorer-studio.genlayer.com/tx/0x88058c974f89711b2e5bfe2181e92059a9ef997a56dd4aef05e670a5dd5cc65f` |
+| raise_dispute | `https://explorer-studio.genlayer.com/tx/0xa6a1c82155596fce834991f813d3e5bea65942ee9acbd7b99b6f2444b056dd94` |
+| resolve_dispute (resolved_worker_wins) | `https://explorer-studio.genlayer.com/tx/0x9b9bbfc9cf489f55cd99d6efea23aa847e1a6ac5531ede54139f27becaa77056` |
 
 ## Use Cases
 
