@@ -59,29 +59,27 @@ Evidence content:
 {page_content}
 
 Has the task been completed satisfactorily?
-Respond ONLY with a JSON object (no markdown, no backticks):
-{{"verdict": "approved", "reasoning": "one sentence"}}
-or
-{{"verdict": "rejected", "reasoning": "one sentence"}}
+Respond ONLY with one word: approved or rejected
 """
             result = gl.nondet.exec_prompt(prompt)
-            return result.strip()
+            verdict = result.strip().lower()
+            if "approved" in verdict:
+                return "approved"
+            return "rejected"
 
         raw = gl.eq_principle.prompt_comparative(
             fetch_and_evaluate,
-            principle="Both validators must reach the same verdict (approved or rejected).",
+            principle="Both validators must return the same single word: approved or rejected.",
         )
 
-        try:
-            parsed = json.loads(raw)
-            verdict = parsed.get("verdict", "rejected")
-            reasoning = parsed.get("reasoning", "")
-        except Exception:
+        verdict = raw.strip().lower()
+        if "approved" in verdict:
+            verdict = "approved"
+        else:
             verdict = "rejected"
-            reasoning = "Could not parse evaluator response"
 
-        self.results[idx] = reasoning
         self.verdicts[idx] = verdict
+        self.results[idx] = verdict
         if verdict == "approved":
             self.statuses[idx] = "approved"
         else:
@@ -117,33 +115,31 @@ You are a senior arbitrator reviewing a disputed freelance task.
 Task description: {description}
 Dispute reason: {dispute_reason}
 
-Evidence content:
+Evidence content fetched directly from the submission URL:
 {page_content}
 
-Who should win this dispute?
-Respond ONLY with a JSON object (no markdown, no backticks):
-{{"verdict": "worker_wins", "reasoning": "one sentence"}}
-or
-{{"verdict": "client_wins", "reasoning": "one sentence"}}
+Based on the task description and the evidence above, who should win?
+Respond ONLY with one of: worker_wins or client_wins
 """
             result = gl.nondet.exec_prompt(prompt)
-            return result.strip()
+            verdict = result.strip().lower()
+            if "worker_wins" in verdict:
+                return "worker_wins"
+            return "client_wins"
 
         raw = gl.eq_principle.prompt_comparative(
             re_evaluate,
-            principle="Both validators must agree on the final arbitration verdict.",
+            principle="Both validators must return the same single verdict: worker_wins or client_wins.",
         )
 
-        try:
-            parsed = json.loads(raw)
-            verdict = parsed.get("verdict", "client_wins")
-            reasoning = parsed.get("reasoning", "")
-        except Exception:
+        verdict = raw.strip().lower()
+        if "worker_wins" in verdict:
+            verdict = "worker_wins"
+        else:
             verdict = "client_wins"
-            reasoning = "Could not parse arbitration response"
 
         self.verdicts[idx] = verdict
-        self.results[idx] = reasoning
+        self.results[idx] = verdict
         if verdict == "worker_wins":
             self.statuses[idx] = "resolved_worker_wins"
         else:
