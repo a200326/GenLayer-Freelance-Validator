@@ -3,6 +3,8 @@
 from genlayer import *
 import json
 
+FETCH_FAILED = "fetch_failed"
+
 class FreelanceTaskValidator(gl.Contract):
     descriptions: DynArray[str]
     evidence_urls: DynArray[str]
@@ -48,8 +50,15 @@ class FreelanceTaskValidator(gl.Contract):
         evidence_url = self.evidence_urls[idx]
 
         def fetch_and_evaluate() -> str:
-            resp = gl.nondet.web.get(evidence_url)
-            page_content = resp.body.decode("utf-8")[:3000]
+            try:
+                resp = gl.nondet.web.get(evidence_url)
+                page_content = resp.body.decode("utf-8")[:3000]
+            except Exception:
+                return FETCH_FAILED
+
+            if not page_content.strip():
+                return FETCH_FAILED
+
             prompt = f"""
 You are a neutral evaluator for a freelance task.
 
@@ -69,20 +78,22 @@ Respond ONLY with one word: approved or rejected
 
         raw = gl.eq_principle.prompt_comparative(
             fetch_and_evaluate,
-            principle="Both validators must return the same single word: approved or rejected.",
+            principle="Both validators must return the same single word: approved, rejected, or fetch_failed.",
         )
 
         verdict = raw.strip().lower()
-        if "approved" in verdict:
-            verdict = "approved"
-        else:
-            verdict = "rejected"
 
-        self.verdicts[idx] = verdict
-        self.results[idx] = verdict
+        if verdict == FETCH_FAILED:
+            self.results[idx] = "Evidence could not be fetched or was empty. Task remains submitted; please retry verify_and_resolve once the URL is reachable."
+            return
+
         if verdict == "approved":
+            self.verdicts[idx] = "approved"
+            self.results[idx] = "approved"
             self.statuses[idx] = "approved"
         else:
+            self.verdicts[idx] = "rejected"
+            self.results[idx] = "rejected"
             self.statuses[idx] = "disputed"
 
     @gl.public.write
@@ -107,8 +118,15 @@ Respond ONLY with one word: approved or rejected
         dispute_reason = self.results[idx]
 
         def re_evaluate() -> str:
-            resp = gl.nondet.web.get(evidence_url)
-            page_content = resp.body.decode("utf-8")[:3000]
+            try:
+                resp = gl.nondet.web.get(evidence_url)
+                page_content = resp.body.decode("utf-8")[:3000]
+            except Exception:
+                return FETCH_FAILED
+
+            if not page_content.strip():
+                return FETCH_FAILED
+
             prompt = f"""
 You are a senior arbitrator reviewing a disputed freelance task.
 
@@ -129,14 +147,14 @@ Respond ONLY with one of: worker_wins or client_wins
 
         raw = gl.eq_principle.prompt_comparative(
             re_evaluate,
-            principle="Both validators must return the same single verdict: worker_wins or client_wins.",
+            principle="Both validators must return the same single verdict: worker_wins, client_wins, or fetch_failed.",
         )
 
         verdict = raw.strip().lower()
-        if "worker_wins" in verdict:
-            verdict = "worker_wins"
-        else:
-            verdict = "client_wins"
+
+        if verdict == FETCH_FAILED:
+            self.results[idx] = "Evidence could not be fetched during arbitration. Task remains disputed; please retry resolve_dispute once the URL is reachable."
+            return
 
         self.verdicts[idx] = verdict
         self.results[idx] = verdict
@@ -144,6 +162,36 @@ Respond ONLY with one of: worker_wins or client_wins
             self.statuses[idx] = "resolved_worker_wins"
         else:
             self.statuses[idx] = "resolved_client_wins"
+
+    # ---- Structured getters for integrators ----
+
+    @gl.public.view
+    def get_status(self, task_id: u256) -> str:
+        return self.statuses[int(task_id)]
+
+    @gl.public.view
+    def get_verdict(self, task_id: u256) -> str:
+        return self.verdicts[int(task_id)]
+
+    @gl.public.view
+    def get_result(self, task_id: u256) -> str:
+        return self.results[int(task_id)]
+
+    @gl.public.view
+    def get_client(self, task_id: u256) -> str:
+        return self.clients[int(task_id)]
+
+    @gl.public.view
+    def get_worker(self, task_id: u256) -> str:
+        return self.workers[int(task_id)]
+
+    @gl.public.view
+    def get_description(self, task_id: u256) -> str:
+        return self.descriptions[int(task_id)]
+
+    @gl.public.view
+    def get_evidence_url(self, task_id: u256) -> str:
+        return self.evidence_urls[int(task_id)]
 
     @gl.public.view
     def get_task(self, task_id: u256) -> str:
